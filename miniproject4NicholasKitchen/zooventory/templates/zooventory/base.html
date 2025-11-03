@@ -1,21 +1,22 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %} - Zooventory</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <link href="{% static 'style.css' %}" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light px-3">
-        <a class="navbar-brand" href="{{ url_for('index') }}">Zooventory</a>
+        <a class="navbar-brand" href="{% url 'index' %}">Zooventory</a>
         <ul class="navbar-nav ms-auto">
-            {% if g.user %}
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('animal.index') }}">Animals</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('food.index') }}">Food</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('calculator.feed_animal') }}">Calculator</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a></li>
+            {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'animal_index' %}">Animals</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'food_index' %}">Food</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'calculator' %}">Calculator</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Log Out</a></li>
             {% else %}
                 <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Register</a></li>
                 <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Log In</a></li>
@@ -29,13 +30,11 @@
                 {% block header %}{% endblock %}
             </header>
 
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-warning text-center mt-3" data-category="{{ category }}">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-warning text-center mt-3" data-tags="{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
 
             {% block content %}{% endblock %}
         </section>
@@ -50,7 +49,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="{{ url_for('auth.login') }}">
+                    <form method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
                         <div class="mb-3">
                             <label for="login-username" class="form-label">Username</label>
                             <input name="username" id="login-username" class="form-control" required>
@@ -75,7 +75,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="{{ url_for('auth.register') }}">
+                    <form method="post" action="{% url 'register' %}">
+                        {% csrf_token %}
                         <div class="mb-3">
                             <label for="register-username" class="form-label">Username</label>
                             <input name="username" id="register-username" class="form-control" required>
@@ -95,14 +96,13 @@
         document.addEventListener('DOMContentLoaded', function() {
             const alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {
-                const category = alert.getAttribute('data-category');
-
-                if (category && category.startsWith('login-') && !category.endsWith('success')) {
+                const tags = alert.getAttribute('data-tags');
+                if (tags && tags.includes('login-error')) {
                     const modal = new bootstrap.Modal(document.getElementById('loginModal'));
                     modal.show();
-                } else if (category && category.startsWith('register-') && !category.endsWith('success')) {
+                } else if (tags && tags.includes('register-error')) {
                     const modal = new bootstrap.Modal(document.getElementById('registerModal'));
-                    modal.show()
+                    modal.show();
                 }
             });
         });
