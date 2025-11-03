@@ -11,6 +11,6 @@ urlpatterns = [
     path('food/create/', views.food_create, name='food_create'),
     path('food/<int:id>/update/', views.food_update, name='food_update'),
     path('food/<int:id>/delete/', views.food_delete, name='food_delete'),
-    path('dashboard/', views.dashboard_view, name='dashboard'),
-    path('calculator/feed/', views.feed_animal_view, name='calculator'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('calculator/feed/', views.feed_animal, name='calculator'),
 ]
