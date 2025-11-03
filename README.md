@@ -27,6 +27,15 @@ pip install -r requirements.txt
  
 ### Executing program
 
+Please enter the following into the console to run the server:
+```
+python manage.py runserver
+```
+
+*If an error appears saying you cannot access that port, try running a different port. For example:*
+```
+pthon manage.py runserver 8001
+```
  
 ## Authors
  
