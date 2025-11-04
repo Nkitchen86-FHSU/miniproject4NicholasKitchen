@@ -10,13 +10,13 @@ from django.utils import timezone
 
 def index(request):
     """Public landing page."""
-    return render(request, 'index.html')
+    return render(request, 'zooventory/index.html')
 
 
 @login_required
 def dashboard(request):
     """User dashboard."""
-    return render(request, 'dashboard/dashboard.html')
+    return render(request, 'zooventory/dashboard/dashboard.html')
 
 
 # -----------------------------
@@ -26,7 +26,7 @@ def dashboard(request):
 @login_required
 def animal_index(request):
     animals = Animal.objects.filter(owner=request.user)
-    return render(request, 'animal/index.html', {'animals': animals})
+    return render(request, 'zooventory/animal/index.html', {'animals': animals})
 
 
 @login_required
@@ -43,7 +43,7 @@ def animal_create(request):
         else:
             messages.error(request, 'Please fill out all fields.')
 
-    return render(request, 'animal/create.html')
+    return render(request, 'zooventory/animal/create.html')
 
 
 @login_required
@@ -58,7 +58,7 @@ def animal_update(request, id):
         messages.success(request, 'Animal updated successfully!')
         return redirect('animal_index')
 
-    return render(request, 'animal/update.html', {'animal': animal})
+    return render(request, 'zooventory/animal/update.html', {'animal': animal})
 
 
 @login_required
@@ -80,7 +80,7 @@ def animal_delete(request, id):
 @login_required
 def food_index(request):
     food_list = Food.objects.filter(owner=request.user)
-    return render(request, 'food/index.html', {'food_list': food_list})
+    return render(request, 'zooventory/food/index.html', {'food_list': food_list})
 
 
 @login_required
@@ -97,7 +97,7 @@ def food_create(request):
         else:
             messages.error(request, 'Please fill out all fields.')
 
-    return render(request, 'food/create.html')
+    return render(request, 'zooventory/food/create.html')
 
 
 @login_required
@@ -112,7 +112,7 @@ def food_update(request, id):
         messages.success(request, 'Food updated successfully!')
         return redirect('food_index')
 
-    return render(request, 'food/update.html', {'food': food})
+    return render(request, 'zooventory/food/update.html', {'food': food})
 
 
 @login_required
