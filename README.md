@@ -24,7 +24,22 @@ pip install -r requirements.txt
  
 ### Installing
 
- 
+Please create the database and migrate it into the project:
+
+``` 
+python manage.py makemigrations
+```
+
+``` 
+python manage.py migrate
+```
+
+Please create your admin user. You will need to enter a username and password. Email is optional:
+
+``` 
+python manage.py createsuperuser
+```
+
 ### Executing program
 
 Please enter the following into the console to run the server:
@@ -34,7 +49,7 @@ python manage.py runserver
 
 *If an error appears saying you cannot access that port, try running a different port. For example:*
 ```
-pthon manage.py runserver 8001
+python manage.py runserver 8001
 ```
  
 ## Authors
