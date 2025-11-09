@@ -24,6 +24,11 @@ pip install -r requirements.txt
  
 ### Installing
 
+Please run the following command to move your working directory into the project:
+``` 
+cd ./miniproject4NicholasKitchen
+```
+
 Please create the database and migrate it into the project:
 
 ``` 
