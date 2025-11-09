@@ -59,8 +59,8 @@ python manage.py runserver 8001
 
 ### Routes
 
-'server_url/' will take you to the login / signup page for Zooventory.
-'server_url/admin' will take you to the admin portal.
+* 'server_url/' will take you to the login / signup page for Zooventory.
+* 'server_url/admin' will take you to the admin portal.
 
 ## Authors
  
