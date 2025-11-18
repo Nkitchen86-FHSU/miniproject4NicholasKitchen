@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login, authenticate, login as auth_login
+from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -14,7 +14,7 @@ def index(request):
     """Public landing page."""
     return render(request, 'zooventory/index.html')
 
-def register(request):
+def custom_register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -23,12 +23,12 @@ def register(request):
             messages.success(request, "Account created successfully!")
             return redirect('dashboard')
         else:
-            messages.error(request, "Registration failed. Ensure inputs are correct.", extra_tags='register-error')
+            messages.error(request, "Registration failed. Ensure inputs are correct. Note: Password must be 8 or more characters.", extra_tags='register-error')
     else:
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
 
-def login(request):
+def custom_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -36,7 +36,7 @@ def login(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            auth_login(request, user)
+            login(request, user)
             messages.success(request, "Login successful!")
             return redirect('dashboard')
 
