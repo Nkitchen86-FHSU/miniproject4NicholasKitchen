@@ -1,5 +1,5 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate, login as auth_login
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -23,12 +23,27 @@ def register(request):
             messages.success(request, "Account created successfully!")
             return redirect('dashboard')
         else:
-            messages.error(request, "Registration failed. Please check your inputs.", extra_tags='register-error')
+            messages.error(request, "Registration failed. Ensure inputs are correct.", extra_tags='register-error')
     else:
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
 
+def login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            auth_login(request, user)
+            messages.success(request, "Login successful!")
+            return redirect('dashboard')
+
+        messages.error(request, "Incorrect username or password.", extra_tags='login-error')
+        return redirect('index')
+
+    return render(request, 'registration/register.html', {'form': form})
 
 @login_required
 def dashboard(request):
