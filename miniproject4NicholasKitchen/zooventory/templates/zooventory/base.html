@@ -46,7 +46,7 @@
         </section>
     </main>
 
-    <!-- ✅ LOGIN MODAL -->
+    <!-- LOGIN MODAL -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -74,7 +74,7 @@
       </div>
     </div>
 
-    <!-- ✅ REGISTER MODAL -->
+    <!-- REGISTER MODAL -->
     <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -111,10 +111,11 @@
             const alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {
                 const tags = alert.getAttribute('data-tags');
-                if (tags && tags.includes('login-error')) {
+                if (tags === 'login-error') {
                     const modal = new bootstrap.Modal(document.getElementById('loginModal'));
                     modal.show();
-                } else if (tags && tags.includes('register-error')) {
+                }
+                if (tags === 'register-error') {
                     const modal = new bootstrap.Modal(document.getElementById('registerModal'));
                     modal.show();
                 }
